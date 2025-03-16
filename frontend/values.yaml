@@ -1,0 +1,28 @@
+global:
+    registry: ''
+
+controller:
+    service:
+        type: NodePort
+
+istio:
+    enabled: false
+
+frontend:
+    replicas: 1
+    image:
+        repo: socksshop/front-end
+        tag: latest
+    resources:
+        limits:
+            cpu: 150m
+            memory: 500Mi
+        requests:
+            cpu: 50m
+            memory: 150Mi
+
+ingress:
+    labels: {}
+    ingressClassName: nginx
+    host: 'socks-shop.local'
+    tlsSecretName: ''
