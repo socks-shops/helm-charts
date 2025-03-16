@@ -7,7 +7,8 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
   rules:
-  - http:
+  - host: {{ .Values.ingress.host }}
+    http:
       paths:
       - backend:
           service:
@@ -16,14 +17,9 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-    {{- if .Values.host }}
-    host: {{ .Values.ingress.host }}
-    {{- end }}
   {{- if .Values.ingress.tlsSecretName }}
   tls:
   - secretName: {{ .Values.ingress.tlsSecretName }}
-    {{- if .Values.host }}
     hosts:
     - {{ .Values.ingress.host }}
-    {{- end }}
   {{- end }}
