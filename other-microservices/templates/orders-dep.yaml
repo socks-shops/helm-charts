@@ -52,20 +52,19 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: {{ .Values.orders.containerPort }}
-          initialDelaySeconds: 300
-          periodSeconds: 3
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: {{ .Values.orders.containerPort }}
-          initialDelaySeconds: 180
-          periodSeconds: 3
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: {{ .Values.orders.containerPort }}
+        #   initialDelaySeconds: 300
+        #   periodSeconds: 3
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: {{ .Values.orders.containerPort }}
+        #   initialDelaySeconds: 180
+        #   periodSeconds: 3
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-
