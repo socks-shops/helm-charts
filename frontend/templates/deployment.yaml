@@ -46,3 +46,9 @@ spec:
             port: 8079
           initialDelaySeconds: 30
           periodSeconds: 3
+        volumeMounts:
+          - name: yarn-cache
+            mountPath: /usr/src/app/.yarn-cache
+      volumes:
+        - name: yarn-cache
+          emptyDir: {}
