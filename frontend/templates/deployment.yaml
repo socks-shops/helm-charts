@@ -16,12 +16,9 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
-      volumes:
-        - name: yarn-cache
-          emptyDir: {}
-
       containers:
         - name: front-end
+          imagePullPolicy: Always
           image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.frontend.image.repo }}:{{ .Values.frontend.image.tag }}
           resources:
 {{ toYaml .Values.frontend.resources | indent 12 }}
@@ -36,7 +33,7 @@ spec:
             capabilities:
               drop:
                 - all
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
           livenessProbe:
             httpGet:
               path: /
@@ -49,6 +46,3 @@ spec:
               port: 8079
             initialDelaySeconds: 30
             periodSeconds: 3
-          volumeMounts:
-            - name: yarn-cache
-              mountPath: /usr/src/app/.yarn-cache
