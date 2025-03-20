@@ -29,7 +29,7 @@ spec:
               value: "true"
           securityContext:
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: 1010
             capabilities:
               drop:
                 - all
