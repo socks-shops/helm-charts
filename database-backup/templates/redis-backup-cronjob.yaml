@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: redis-backup
+  labels:
+    app: redis-backup
+spec:
+  schedule: "{{ .Values.backup.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.backup.serviceAccountName }}
+          containers:
+          - name: redis-backup
+            image: socksshop/socksshop-redis:1.0
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Création du répertoire de backup..."
+                mkdir -p /backup
+                echo "Démarrage du backup Redis..."
+                redis-cli -h session-db --rdb /backup/dump.rdb
+                echo "Envoi du backup vers S3..."
+                aws s3 cp /backup/dump.rdb s3://{{ .Values.backup.bucketName }}/redis/$(date +\%Y-\%m-\%d)/dump.rdb
+          restartPolicy: OnFailure
