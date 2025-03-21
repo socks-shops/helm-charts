@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mysql-backup
+  labels:
+    app: mysql-backup
+spec:
+  schedule: "{{ .Values.backup.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.backup.serviceAccountName }}
+          containers:
+          - name: mysql-backup
+            image: socksshop/socksshop-mysql:1.0
+            env:
+              - name: MYSQL_HOST
+                value: "catalogue-db"
+              - name: MYSQL_USER
+                value: "root"
+              - name: MYSQL_PASSWORD
+                value: "fake_password"
+              - name: MYSQL_DATABASE
+                value: "socksdb"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Démarrage du backup MySQL..."
+                mysqldump -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE > /backup/mysql_backup.sql
+                echo "Envoi du backup vers S3..."
+                aws s3 cp /backup/mysql_backup.sql s3://{{ .Values.backup.bucketName }}/mysql/$(date +\%Y-\%m-\%d)/mysql_backup.sql
+          restartPolicy: OnFailure

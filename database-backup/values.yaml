@@ -1,0 +1,17 @@
+backup:
+  schedule: "1 0 */2 * *"         
+  bucketName: "mon-bucket-backup"
+  serviceAccountName: "aws-credentials-sa"
+
+mongo:
+  host: "carts-db"
+
+mysql:
+  host: "catalogue-db"
+  username: "root"                # à remplacer par le nom d'utilisateur
+  password: "votre_mysql_password"  # à remplacer par le mot de passe (idéalement via un Secret)
+  database: "catalogue"
+
+redis:
+  dataPath: "/data/dump.rdb"      # Chemin dans le container où se trouve le fichier de sauvegarde
+  host: "session-db"
