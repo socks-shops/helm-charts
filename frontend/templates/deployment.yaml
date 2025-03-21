@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         name: front-end
+        version: {{ .Release.Name }}
       {{- if .Values.istio.enabled }}
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
