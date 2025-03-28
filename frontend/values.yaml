@@ -5,9 +5,6 @@ controller:
     service:
         type: NodePort
 
-istio:
-    enabled: false
-
 frontend:
     replicas: 1
     image:
@@ -15,11 +12,24 @@ frontend:
         tag: latest
     resources:
         limits:
-            cpu: 150m
-            memory: 500Mi
+            cpu: 300m
+            memory: 1000Mi
         requests:
-            cpu: 50m
-            memory: 150Mi
+            cpu: 100m
+            memory: 300Mi
+
+# frontend:
+#     replicas: 1
+#     image:
+#         repo: socksshop/front-end
+#         tag: latest
+#     resources:
+#         limits:
+#             cpu: 150m
+#             memory: 500Mi
+#         requests:
+#             cpu: 50m
+#             memory: 150Mi
 
 ingress:
     labels: {}

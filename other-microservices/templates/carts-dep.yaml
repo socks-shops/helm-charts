@@ -56,13 +56,13 @@ spec:
           httpGet:
             path: /health
             port: {{ .Values.carts.containerPort }}
-          initialDelaySeconds: 840
+          initialDelaySeconds: 420
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /health
             port: {{ .Values.carts.containerPort }}
-          initialDelaySeconds: 720
+          initialDelaySeconds: 360
           periodSeconds: 3
       volumes:
         - name: tmp-volume
