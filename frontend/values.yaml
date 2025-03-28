@@ -5,6 +5,9 @@ controller:
     service:
         type: NodePort
 
+istio:
+    enabled: false
+
 frontend:
     replicas: 1
     image:
