@@ -3,7 +3,7 @@ global:
 
 controller:
     service:
-        type: NodePort
+        type: LoadBalancer
 
 istio:
     enabled: false
@@ -37,5 +37,5 @@ frontend:
 ingress:
     labels: {}
     ingressClassName: nginx
-    host: socks-shop.local
+    host: sockshop.ip-ddns.com
     tlsSecretName: ''
