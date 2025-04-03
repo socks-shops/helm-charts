@@ -4,6 +4,8 @@ global:
 controller:
     service:
         type: LoadBalancer
+    debug:
+        enable: false
 
 istio:
     enabled: false
