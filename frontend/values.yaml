@@ -1,11 +1,12 @@
 global:
     registry: ''
 
-controller:
-    service:
-        type: LoadBalancer
-    debug:
-        enable: false
+nginx-ingress:
+    controller:
+        service:
+            type: LoadBalancer
+        debug:
+            enable: false
 
 istio:
     enabled: false
