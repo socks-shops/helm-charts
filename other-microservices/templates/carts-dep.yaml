@@ -50,7 +50,7 @@ spec:
                 name: carts-secret
                 key: MONGODB_PASSWORD
           - name: SPRING_DATA_MONGODB_URI
-            value: "mongodb://sockshop_docdb_user:SockshopPassword2025@sockshop-docdb-cluster-0.cadqyg8as50n.us-east-1.docdb.amazonaws.com:27017,sockshop-docdb-cluster-1.cadqyg8as50n.us-east-1.docdb.amazonaws.com:27017,sockshop-docdb-cluster-2.cadqyg8as50n.us-east-1.docdb.amazonaws.com:27017/carts-db?tls=true&replicaSet=rs0&retryWrites=false&tlsCAFile=/certs/global-bundle.pem"
+            value: "mongodb://sockshop_docdb_user:SockshopPassword2025@sockshop-docdb-cluster-0.cadqyg8as50n.us-east-1.docdb.amazonaws.com:27017%2Fcarts-db?tls=true&tlsCAFile=%2Fcerts%2Fglobal-bundle.pem&retryWrites=false&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
             #"mongodb://sockshop_docdb_user:SockshopPassword2025@sockshop-docdb-cluster.cluster-cadqyg8as50n.us-east-1.docdb.amazonaws.com:27017/carts-db?tls=true&tlsCAFile=/certs/global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
             #"mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@{{ .Values.mongodb.endpoint }}:{{ .Values.mongodb.port }}/$(MONGODB_DATABASE)?{{ .Values.mongodb.options }}"
         resources:
