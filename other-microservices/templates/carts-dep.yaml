@@ -34,23 +34,23 @@ spec:
           {{- end }}
           - name: JAVA_OPTS
             value: {{ .Values.java.options }}
-          - name: MONGO_DB_DATABASE
+          - name: MONGODB_DATABASE
             valueFrom:
               configMapKeyRef:
                 name: carts-config
                 key: MONGODB_DATABASE
-          - name: MONGO_DB_USERNAME
+          - name: MONGODB_USERNAME
             valueFrom:
               secretKeyRef:
                 name: carts-secret
                 key: MONGODB_USERNAME
-          - name: MONGO_DB_PASSWORD
+          - name: MONGODB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: carts-secret
-                key: MONGO_DB_PASSWORD
+                key: MONGODB_PASSWORD
           - name: SPRING_DATA_MONGODB_URI
-            value: "mongodb://$(MONGO_DB_USERNAME):$(MONGO_DB_PASSWORD)@{{ .Values.mongodb.endpoint }}:{{ .Values.mongodb.port }}/$(MONGO_DB_DATABASE)?{{ .Values.mongodb.options }}"
+            value: "mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@{{ .Values.mongodb.endpoint }}:{{ .Values.mongodb.port }}/$(MONGODB_DATABASE)?{{ .Values.mongodb.options }}"
         resources:
 {{ toYaml .Values.carts.resources | indent 10 }}
         ports:
