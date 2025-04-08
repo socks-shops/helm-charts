@@ -5,4 +5,4 @@ metadata:
 data:
   MONGO_DB_DATABASE: "carts-db"
   global-bundle.pem: |
-    {{ .Files.Get "files/global-bundle.pem" | indent 4 }}
+  {{ .Files.Get "files/global-bundle.pem" | indent 4 }}
