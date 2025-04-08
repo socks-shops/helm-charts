@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carts-config
+data:
+  MONGO_DB_DATABASE: "carts-db"
+  global-bundle.pem: |
+    {{ .Files.Get "files/global-bundle.pem" | indent 4 }}

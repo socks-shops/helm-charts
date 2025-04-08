@@ -28,16 +28,33 @@ spec:
         name: carts
         image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.carts.image.repo }}:{{ .Values.carts.image.tag }}
         env:
-         {{- if .Values.zipkin.enabled }}
-         - name: ZIPKIN
-           value: {{ .Values.zipkin.url }}
-         {{- end }}
-         - name: JAVA_OPTS
-           value: {{ .Values.java.options }}
+          {{- if .Values.zipkin.enabled }}
+          - name: ZIPKIN
+            value: {{ .Values.zipkin.url }}
+          {{- end }}
+          - name: JAVA_OPTS
+            value: {{ .Values.java.options }}
+          - name: MONGO_DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: carts-config
+                key: MONGODB_DATABASE
+          - name: MONGO_DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: carts-secret
+                key: MONGODB_USERNAME
+          - name: MONGO_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: carts-secret
+                key: MONGO_DB_PASSWORD
+          - name: SPRING_DATA_MONGODB_URI
+            value: "mongodb://$(MONGO_DB_USERNAME):$(MONGO_DB_PASSWORD)@{{ .Values.mongodb.endpoint }}:{{ .Values.mongodb.port }}/$(MONGO_DB_DATABASE)?{{ .Values.mongodb.options }}"
         resources:
 {{ toYaml .Values.carts.resources | indent 10 }}
         ports:
-         - containerPort: {{ .Values.carts.containerPort }}
+          - containerPort: {{ .Values.carts.containerPort }}
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
@@ -50,8 +67,11 @@ spec:
 {{- end }}
           readOnlyRootFilesystem: true
         volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
+          - mountPath: /tmp
+            name: tmp-volume
+          - name: docdb-cert-volume
+            mountPath: /certs
+            readOnly: true
         livenessProbe:
           httpGet:
             path: /health
@@ -68,3 +88,9 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        - name: docdb-cert-volume
+          configMap:
+            name: docdb-cert
+            items:
+              - key: global-bundle.pem
+                path: global-bundle.pem
