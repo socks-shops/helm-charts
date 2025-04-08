@@ -90,7 +90,7 @@ spec:
             medium: Memory
         - name: docdb-cert-volume
           configMap:
-            name: docdb-cert
+            name: carts-config
             items:
               - key: global-bundle.pem
                 path: global-bundle.pem
