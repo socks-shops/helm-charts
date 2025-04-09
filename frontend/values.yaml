@@ -1,12 +1,15 @@
 global:
     registry: ''
 
-nginx-ingress:
-    controller:
-        service:
-            type: LoadBalancer
-        debug:
-            enable: false
+# nginx-ingress:
+#     controller:
+#         service:
+#             type: LoadBalancer
+#             # annotations:
+#             #     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # Network LB (performant pour L7)
+#             #     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "<arn-certificat-acm>"  # Pour HTTPS
+#         debug:
+#             enable: false
 
 istio:
     enabled: false
@@ -24,21 +27,18 @@ frontend:
             cpu: 100m
             memory: 300Mi
 
-# frontend:
-#     replicas: 1
-#     image:
-#         repo: socksshop/front-end
-#         tag: latest
-#     resources:
-#         limits:
-#             cpu: 150m
-#             memory: 500Mi
-#         requests:
-#             cpu: 50m
-#             memory: 150Mi
+# ingress:
+#     labels: {}
+#     ingressClassName: nginx
+#     host: sockshop.ip-ddns.com
+#     tlsSecretName: ''
+#     # annotations:
+#     #     cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Si vous utilisez cert-manager
 
 ingress:
     labels: {}
-    ingressClassName: nginx
-    host: sockshop.ip-ddns.com
-    tlsSecretName: ''
+    ingressClassName: alb
+    host: www.datascientets-socks-shop.com                 # ← remplace par ton domaine réel
+    albArn: arn:aws:elasticloadbalancing:eu-west-3:123456789012:loadbalancer/app/my-alb-name/abc123def456  # ← sortie Terraform
+    certificateArn: arn:aws:acm:eu-west-3:123456789012:certificate/abcdefg-1234-5678-aaaa-bbbbbcccccc      # ← ton ACM cert ARN
+    groupName: frontend-group             # ← facultatif mais utile si plusieurs ingresses
