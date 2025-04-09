@@ -29,6 +29,6 @@ ingress:
     labels: {}
     ingressClassName: alb
     host: www.datascientets-socks-shop.com                 # ← remplace par ton domaine réel
-    albArn: arn:aws:elasticloadbalancing:us-east-1:471744311643:loadbalancer/app/socks-shop-lb/df084f772071e57c  # ← sortie Terraform
+    albArn: arn:aws:elasticloadbalancing:us-east-1:471744311643:loadbalancer/app/socks-shop-lb/e2a44d1dce98a2a9  # ← sortie Terraform
     certificateArn: arn:aws:acm:us-east-1:471744311643:certificate/a230a5d9-f1c9-4e21-b87e-4ad4ec11901e      # ← ton ACM cert ARN
     groupName: frontend-group             # ← facultatif mais utile si plusieurs ingresses
