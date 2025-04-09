@@ -1,16 +1,6 @@
 global:
     registry: ''
 
-# nginx-ingress:
-#     controller:
-#         service:
-#             type: LoadBalancer
-#             # annotations:
-#             #     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # Network LB (performant pour L7)
-#             #     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "<arn-certificat-acm>"  # Pour HTTPS
-#         debug:
-#             enable: false
-
 istio:
     enabled: false
 
