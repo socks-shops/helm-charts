@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: session-db
   labels:
@@ -32,3 +32,15 @@ spec:
           readOnlyRootFilesystem: true
         resources:
 {{ toYaml .Values.sessiondb.resources | indent 10 }}
+        volumeMounts:
+            - mountPath: /data
+              name: session-db-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: session-db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.sessiondb.persistentVolume.size }}

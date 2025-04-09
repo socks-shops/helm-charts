@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: catalogue-db
   labels:
@@ -28,4 +28,15 @@ spec:
           containerPort: 3306
         resources:
 {{ toYaml .Values.cataloguedb.resources | indent 10 }}
-
+        volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: catalogue-db-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: catalogue-db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.cataloguedb.persistentVolume.size }}

@@ -49,6 +49,9 @@ cataloguedb:
         requests:
             cpu: 100m
             memory: 300Mi
+    persistentVolume:
+        storageClass: ''
+        size: 512Mi
 
 catalogue:
     image:
