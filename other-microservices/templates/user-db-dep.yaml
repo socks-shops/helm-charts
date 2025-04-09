@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: user-db
   labels:
@@ -33,9 +33,14 @@ spec:
               - SETUID
           readOnlyRootFilesystem: true
         volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
+            - mountPath: /data/db
+              name: user-db-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: user-db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.userdb.persistentVolume.size }}

@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: orders-db
   labels:
@@ -33,9 +33,14 @@ spec:
               - SETUID
           readOnlyRootFilesystem: true
         volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
+            - mountPath: /data/db
+              name: orders-db-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: orders-db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.ordersdb.persistentVolume.size }}
