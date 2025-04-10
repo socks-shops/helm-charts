@@ -52,4 +52,4 @@ spec:
               service:
                 name: front-end
                 port:
-                  number: 8080
+                  number: 80
