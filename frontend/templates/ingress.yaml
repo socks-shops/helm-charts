@@ -34,16 +34,12 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/load-balancer-arn: "{{ .Values.ingress.albArn }}"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/certificate-arn: "{{ .Values.ingress.certificateArn }}"
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/target-type: ip
-    meta.helm.sh/release-name: socksshop-frontend
-    meta.helm.sh/release-namespace: dev
     alb.ingress.kubernetes.io/healthcheck-path: /
     #alb.ingress.kubernetes.io/group.name: "{{ .Values.ingress.groupName }}"
-  name: socksshop-frontend-socks-ingress
-  namespace: dev
 spec:
   ingressClassName: alb
   rules:
