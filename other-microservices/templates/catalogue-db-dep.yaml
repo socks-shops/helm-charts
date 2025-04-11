@@ -40,3 +40,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.cataloguedb.persistentVolume.size }}
+        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)

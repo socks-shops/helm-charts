@@ -293,6 +293,9 @@ zipkinmysql:
 #         requests:
 #             cpu: 50m
 #             memory: 150Mi
+#     persistentVolume:
+#         storageClass: ''
+#         size: 256Mi
 
 # catalogue:
 #     image:
@@ -439,6 +442,9 @@ zipkinmysql:
 #         requests:
 #             cpu: 50m
 #             memory: 150Mi
+#     persistentVolume:
+#         storageClass: ''
+#         size: 256Mi
 
 # user:
 #     image:

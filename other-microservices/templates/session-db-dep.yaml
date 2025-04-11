@@ -44,3 +44,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.sessiondb.persistentVolume.size }}
+        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)

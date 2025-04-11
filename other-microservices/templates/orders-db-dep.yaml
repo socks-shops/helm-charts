@@ -31,7 +31,7 @@ spec:
               - CHOWN
               - SETGID
               - SETUID
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
         volumeMounts:
             - mountPath: /data/db
               name: orders-db-pvc
@@ -44,3 +44,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.ordersdb.persistentVolume.size }}
+        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)
