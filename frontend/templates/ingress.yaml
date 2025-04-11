@@ -1,54 +1,54 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   labels:
-# {{ toYaml .Values.ingress.labels | indent 4 }}
-#   name: {{ .Release.Name }}-socks-ingress
-# spec:
-#   ingressClassName: {{ .Values.ingress.ingressClassName }}
-#   rules:
-#   - host: {{ .Values.ingress.host }}
-#     http:
-#       paths:
-#       - backend:
-#           service:
-#             name: front-end
-#             port:
-#               number: 80
-#         path: /
-#         pathType: Prefix
-#   {{- if .Values.ingress.tlsSecretName }}
-#   tls:
-#   - secretName: {{ .Values.ingress.tlsSecretName }}
-#     hosts:
-#     - {{ .Values.ingress.host }}
-#   {{- end }}
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-socks-ingress
   labels:
 {{ toYaml .Values.ingress.labels | indent 4 }}
-  annotations:
-    alb.ingress.kubernetes.io/load-balancer-arn: "{{ .Values.ingress.albArn }}"
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/certificate-arn: "{{ .Values.ingress.certificateArn }}"
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/group.name: "{{ .Values.ingress.groupName }}"
+  name: {{ .Release.Name }}-socks-ingress
 spec:
-  ingressClassName: alb
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
   rules:
-    - host: {{ .Values.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: front-end
-                port:
-                  number: 80
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: front-end
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  {{- if .Values.ingress.tlsSecretName }}
+  tls:
+  - secretName: {{ .Values.ingress.tlsSecretName }}
+    hosts:
+    - {{ .Values.ingress.host }}
+  {{- end }}
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: {{ .Release.Name }}-socks-ingress
+#   labels:
+# {{ toYaml .Values.ingress.labels | indent 4 }}
+#   annotations:
+#     alb.ingress.kubernetes.io/load-balancer-arn: "{{ .Values.ingress.albArn }}"
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/certificate-arn: "{{ .Values.ingress.certificateArn }}"
+#     alb.ingress.kubernetes.io/ssl-redirect: "443"
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/healthcheck-path: /
+#     alb.ingress.kubernetes.io/group.name: "{{ .Values.ingress.groupName }}"
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - host: {{ .Values.ingress.host }}
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: front-end
+#                 port:
+#                   number: 80
