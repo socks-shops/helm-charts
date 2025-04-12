@@ -27,6 +27,7 @@ carts:
         repo: weaveworksdemos/carts
         tag: 0.4.8
     containerPort: 80
+    metricsPort: 8080
     resources:
         limits:
             cpu: 300m
