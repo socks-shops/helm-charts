@@ -1,12 +1,11 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: carts-db
   labels:
     name: carts-db
 spec:
-  serviceName: carts-db
   replicas: 1
   selector:
     matchLabels:
@@ -34,15 +33,9 @@ spec:
               - SETUID
           readOnlyRootFilesystem: false
         volumeMounts:
-            - mountPath: /data/db
-              name: carts-db-pvc
-  volumeClaimTemplates:
-    - metadata:
-        name: carts-db-pvc
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.cartsdb.persistentVolume.size }}
-        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory

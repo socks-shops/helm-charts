@@ -1,12 +1,11 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: orders-db
   labels:
     name: orders-db
 spec:
-  serviceName: orders-db
   replicas: 1
   selector:
     matchLabels:
@@ -34,15 +33,9 @@ spec:
               - SETUID
           readOnlyRootFilesystem: false
         volumeMounts:
-            - mountPath: /data/db
-              name: orders-db-pvc
-  volumeClaimTemplates:
-    - metadata:
-        name: orders-db-pvc
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.ordersdb.persistentVolume.size }}
-        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory

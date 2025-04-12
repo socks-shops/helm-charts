@@ -21,9 +21,6 @@ cartsdb:
         limits:
             cpu: 500m
             memory: 512Mi
-    persistentVolume:
-        storageClass: ''
-        size: 512Mi
 
 carts:
     image:
@@ -49,9 +46,6 @@ cataloguedb:
         requests:
             cpu: 100m
             memory: 300Mi
-    persistentVolume:
-        storageClass: ''
-        size: 512Mi
 
 catalogue:
     image:
@@ -91,9 +85,6 @@ ordersdb:
         limits:
             cpu: 500m
             memory: 512Mi
-    persistentVolume:
-        storageClass: ''
-        size: 512Mi
 
 orders:
     image:
@@ -157,9 +148,6 @@ sessiondb:
         limits:
             memory: 256Mi
             cpu: 250m
-    persistentVolume:
-        storageClass: ''
-        size: 512Mi
 
 shipping:
     image:
@@ -185,9 +173,6 @@ userdb:
         requests:
             cpu: 100m
             memory: 300Mi
-    persistentVolume:
-        storageClass: ''
-        size: 512Mi
 
 user:
     image:

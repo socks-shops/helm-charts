@@ -1,12 +1,11 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: user-db
   labels:
     name: user-db
 spec:
-  serviceName: user-db
   replicas: 1
   selector:
     matchLabels:
@@ -34,15 +33,9 @@ spec:
               - SETUID
           readOnlyRootFilesystem: false
         volumeMounts:
-            - mountPath: /data/db
-              name: user-db-pvc
-  volumeClaimTemplates:
-    - metadata:
-        name: user-db-pvc
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.userdb.persistentVolume.size }}
-        # storageClassName: local-path # FOR LOCAL DEPLOIMENT (delete for AWS DEPLOYMENT)
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
