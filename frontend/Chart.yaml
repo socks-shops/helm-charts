@@ -2,8 +2,3 @@ apiVersion: v2
 description: A Helm chart for Sock Shop frontend
 name: frontend-chart
 version: 0.3.0
-
-dependencies:
-  - name: ingress-nginx
-    version: "4.0.6"
-    repository: "https://kubernetes.github.io/ingress-nginx"
