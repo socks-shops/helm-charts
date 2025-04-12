@@ -12,8 +12,8 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/load-balancer-attributes: |
-      deletion_protection.enabled=false
+    # alb.ingress.kubernetes.io/load-balancer-attributes: |
+    #   deletion_protection.enabled=false
 spec:
   ingressClassName: alb
   rules:
