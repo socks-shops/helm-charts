@@ -17,14 +17,14 @@ frontend:
             cpu: 100m
             memory: 300Mi
 
-# ingress:
-#     labels: {}
-#     ingressClassName: nginx
-#     host: datascientets-socks-shop.com
-#     tlsSecretName: socks-cert
-#     annotations:
-#         kubernetes.io/ingress.class: nginx
-#         cert-manager.io/cluster-issuer: "letsencrypt-staging"  # Si vous utilisez cert-manager
+ingress:
+    labels: {}
+    ingressClassName: nginx
+    host: datascientets-socks-shop.com
+    tlsSecretName: socks-cert
+    annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"  # Si vous utilisez cert-manager
 
 # nginx-ingress:
 #     controller:
