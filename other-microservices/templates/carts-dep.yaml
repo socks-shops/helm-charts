@@ -14,8 +14,11 @@ spec:
     metadata:
       labels:
         name: carts
-      {{- if .Values.istio.enabled }}
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.carts.metricsPort | default .Values.carts.containerPort }}"
+        prometheus.io/path: "/metrics"
+      {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
@@ -37,7 +40,10 @@ spec:
         resources:
 {{ toYaml .Values.carts.resources | indent 10 }}
         ports:
-         - containerPort: {{ .Values.carts.containerPort }}
+        - containerPort: {{ .Values.carts.containerPort }}
+          name: http
+        - containerPort: {{ .Values.carts.metricsPort | default .Values.carts.containerPort }}
+          name: metrics
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001

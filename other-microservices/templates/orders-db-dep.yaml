@@ -6,6 +6,7 @@ metadata:
   labels:
     name: orders-db
 spec:
+  serviceName: orders-db
   replicas: 1
   selector:
     matchLabels:
