@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  kubernetes-dashboard.json: |-
+    {{ .Files.Get "dashboards/kubernetes-dashboard.json" | quote }}
+
+  prometheus-dashboard.json: |-
+    {{ .Files.Get "dashboards/prometheus-dashboard.json" | quote }}
+
+  sockshop-dashboard.json: |-
+    {{ .Files.Get "dashboards/sockshop-dashboard.json" | quote }}
+
+  node-exporter-dashboard.json: |-
+    {{ .Files.Get "dashboards/node-exporter-dashboard.json" | quote }}
