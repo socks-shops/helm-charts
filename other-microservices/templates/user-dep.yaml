@@ -14,8 +14,11 @@ spec:
     metadata:
       labels:
         name: user
-      {{- if .Values.istio.enabled }}
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.user.metricsPort | default .Values.user.containerPort }}"
+        prometheus.io/path: "/metrics"
+      {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
@@ -32,6 +35,9 @@ spec:
 {{ toYaml .Values.user.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.user.containerPort }}
+          name: http
+        - containerPort: {{ .Values.user.metricsPort | default .Values.user.containerPort }}
+          name: metrics
         env:
         - name: MONGO_HOST
           value: user-db:27017

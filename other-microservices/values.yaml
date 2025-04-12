@@ -53,6 +53,7 @@ catalogue:
         repo: weaveworksdemos/catalogue
         tag: 0.3.5
     containerPort: 80
+    metricsPort: 8080
     resources:
         limits:
             cpu: 100m
@@ -92,6 +93,7 @@ orders:
         repo: weaveworksdemos/orders
         tag: 0.4.7
     containerPort: 80
+    metricsPort: 8080
     resources:
         limits:
             cpu: 500m
@@ -106,6 +108,7 @@ payment:
         tag: 0.4.3
     declinePaymentsOverAmount: 200
     containerPort: 8080
+    metricsPort: 8081
     resources:
         limits:
             cpu: 100m
@@ -155,6 +158,7 @@ shipping:
         repo: weaveworksdemos/shipping
         tag: 0.4.8
     containerPort: 80
+    metricsPort: 8080
     resources:
         limits:
             cpu: 300m
@@ -180,6 +184,7 @@ user:
         repo: weaveworksdemos/user
         tag: 0.4.7
     containerPort: 80
+    metricsPort: 8080
     resources:
         limits:
             cpu: 300m

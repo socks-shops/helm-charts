@@ -14,8 +14,11 @@ spec:
     metadata:
       labels:
         name: catalogue
-      {{- if .Values.istio.enabled }}
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.catalogue.metricsPort | default .Values.catalogue.containerPort }}"
+        prometheus.io/path: "/metrics"
+      {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
@@ -35,6 +38,9 @@ spec:
 {{ toYaml .Values.catalogue.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.catalogue.containerPort }}
+          name: http
+        - containerPort: {{ .Values.catalogue.metricsPort | default .Values.catalogue.containerPort }}
+          name: metrics
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001

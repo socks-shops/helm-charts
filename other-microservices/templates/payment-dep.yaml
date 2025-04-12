@@ -14,8 +14,11 @@ spec:
     metadata:
       labels:
         name: payment
-      {{- if .Values.istio.enabled }}
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.payment.metricsPort | default .Values.payment.containerPort }}"
+        prometheus.io/path: "/metrics"
+      {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
@@ -29,6 +32,9 @@ spec:
 {{ toYaml .Values.payment.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.payment.containerPort }}
+          name: http
+        - containerPort: {{ .Values.payment.metricsPort | default .Values.payment.containerPort }}
+          name: metrics
         {{- if .Values.zipkin.enabled }}
         env:
         - name: ZIPKIN

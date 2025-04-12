@@ -14,8 +14,11 @@ spec:
     metadata:
       labels:
         name: orders
-      {{- if .Values.istio.enabled }}
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.orders.metricsPort | default .Values.orders.containerPort }}"
+        prometheus.io/path: "/metrics"
+      {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
     spec:
@@ -38,6 +41,9 @@ spec:
 {{ toYaml .Values.orders.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.orders.containerPort }}
+          name: http
+        - containerPort: {{ .Values.orders.metricsPort | default .Values.orders.containerPort }}
+          name: metrics
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
