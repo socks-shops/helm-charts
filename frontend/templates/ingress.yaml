@@ -12,10 +12,10 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /
-    # alb.ingress.kubernetes.io/load-balancer-attributes: |
-    #   deletion_protection.enabled=false
+    alb.ingress.kubernetes.io/load-balancer-attributes: |
+      deletion_protection.enabled=false
 spec:
-  ingressClassName: alb
+  ingressClassName: alb  # Correctement placé sous spec, pas dans les rules
   rules:
   - host: datascientets-socks-shop.com
     http:
@@ -37,6 +37,7 @@ spec:
             name: front-end
             port:
               number: 80
+
 
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
