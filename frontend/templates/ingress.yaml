@@ -6,18 +6,16 @@ metadata:
   labels:
     {{ toYaml .Values.ingress.labels | indent 4 }}
   annotations:
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:471744311643:certificate/a230a5d9-f1c9-4e21-b87e-4ad4ec11901e"
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/load-balancer-attributes: |
       deletion_protection.enabled=false
 spec:
-  ingressClassName: alb  # Correctement placé sous spec, pas dans les rules
+  ingressClassName: alb
   rules:
-  - host: datascientets-socks-shop.com
+  - host: sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -27,7 +25,7 @@ spec:
             name: front-end
             port:
               number: 80
-  - host: www.datascientets-socks-shop.com
+  - host: www.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -37,7 +35,7 @@ spec:
             name: front-end
             port:
               number: 80
-  - host: metrics.datascientets-socks-shop.com
+  - host: metrics.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
