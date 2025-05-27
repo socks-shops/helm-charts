@@ -1,0 +1,11 @@
+rabbitmq:
+    image:
+        repo: rabbitmq
+        tag: 3.6.8
+    resources:
+        requests:
+            memory: 256Mi
+            cpu: 350m
+        limits:
+            memory: 512Mi
+            cpu: 1

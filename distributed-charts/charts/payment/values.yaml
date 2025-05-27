@@ -1,0 +1,14 @@
+payment:
+    image:
+        repo: weaveworksdemos/payment
+        tag: 0.4.3
+    declinePaymentsOverAmount: 200
+    containerPort: 8080
+    metricsPort: 8081
+    resources:
+        limits:
+            cpu: 100m
+            memory: 100Mi
+        requests:
+            cpu: 100m
+            memory: 100Mi

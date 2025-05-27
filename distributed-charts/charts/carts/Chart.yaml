@@ -1,0 +1,4 @@
+apiVersion: v2
+description: A Helm chart for carts microservice
+name: helm-chart
+version: 0.3.0

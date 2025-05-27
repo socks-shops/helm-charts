@@ -1,0 +1,25 @@
+cartsdb:
+    image:
+        repo: mongo
+        tag: 4.4.0
+    resources:
+        requests:
+            cpu: 500m
+            memory: 512Mi
+        limits:
+            cpu: 500m
+            memory: 512Mi
+
+carts:
+    image:
+        repo: weaveworksdemos/carts
+        tag: 0.4.8
+    containerPort: 80
+    metricsPort: 8080
+    resources:
+        limits:
+            cpu: 300m
+            memory: 2000Mi
+        requests:
+            cpu: 300m
+            memory: 2000Mi

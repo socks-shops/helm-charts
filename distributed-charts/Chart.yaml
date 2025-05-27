@@ -1,0 +1,47 @@
+apiVersion: v2
+name: distributed-charts
+description: A Helm chart that aggregates all microservices for deployment
+type: application
+version: 0.3.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: carts
+    version: 0.3.0
+    repository: "file://charts/carts"
+  - name: catalogue
+    version: 0.3.0
+    repository: "file://charts/catalogue"
+  - name: frontend
+    version: 0.3.0
+    repository: "file://charts/frontend"
+  - name: loadtest
+    version: 0.3.0
+    repository: "file://charts/loadtest"
+  - name: orders
+    version: 0.3.0
+    repository: "file://charts/orders"
+  - name: payment
+    version: 0.3.0
+    repository: "file://charts/payment"
+  - name: queue-master
+    version: 0.3.0
+    repository: "file://charts/queue-master"
+  - name: rabbitmq
+    version: 0.3.0
+    repository: "file://charts/rabbitmq"
+  - name: session
+    version: 0.3.0
+    repository: "file://charts/session"
+  - name: shipping
+    version: 0.3.0
+    repository: "file://charts/shipping"
+  - name: user
+    version: 0.3.0
+    repository: "file://charts/user"
+  - name: zipkin
+    version: 0.3.0
+    repository: "file://charts/zipkin"
+  - name: monitoring
+    version: 0.1.0
+    repository: "file://charts/monitoring"

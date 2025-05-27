@@ -1,0 +1,13 @@
+shipping:
+    image:
+        repo: weaveworksdemos/shipping
+        tag: 0.4.8
+    containerPort: 80
+    metricsPort: 8080
+    resources:
+        limits:
+            cpu: 300m
+            memory: 2000Mi
+        requests:
+            cpu: 300m
+            memory: 2000Mi

@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alerts
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: {{ .Release.Name }}
+spec:
+  groups:
+    - name: alerts
+      rules:
+        - alert: HighErrorRate
+          expr: >
+            sum(rate(http_requests_total{status=~"5..", job="sockshop"}[5m]))
+            /
+            sum(rate(http_requests_total{job="sockshop"}[5m])) > 0.05
+          for: 5m
+          labels:
+            severity: warning
+            team: devops
+          annotations:
+            summary: "High error rate detected on sockshop services"
+            description: "The error rate for HTTP requests (status 5xx) in job {{ "{{" }} $labels.job {{ "}}" }} is above 5% for the last 5 minutes."
+        - alert: PodDown
+          expr: kube_pod_status_phase{phase="Failed", job="sockshop"} > 0
+          for: 2m
+          labels:
+            severity: critical
+            team: devops
+          annotations:
+            summary: "Pod {{ "{{" }} $labels.pod {{ "}}" }} is down in namespace {{ "{{" }} $labels.namespace {{ "}}" }}"
+            description: "Pod {{ "{{" }} $labels.pod {{ "}}" }} has been in a failed state for more than 2 minutes."
+        - alert: HighPodCPUUsage
+          expr: rate(container_cpu_usage_seconds_total{job="sockshop"}[5m]) > 0.8
+          for: 5m
+          labels:
+            severity: warning
+            team: devops
+          annotations:
+            summary: "High CPU usage on pod {{ "{{" }} $labels.pod {{ "}}" }}"
+            description: "Pod {{ "{{" }} $labels.pod {{ "}}" }} in namespace {{ "{{" }} $labels.namespace {{ "}}" }} is using more than 80% CPU for the last 5 minutes."
+        - alert: HighMemoryUsage
+          expr: container_memory_working_set_bytes{job="sockshop"} / container_spec_memory_limit_bytes > 0.9
+          for: 5m
+          labels:
+            severity: warning
+            team: devops
+          annotations:
+            summary: "High memory usage on pod {{ "{{" }} $labels.pod {{ "}}" }}"
+            description: "Pod {{ "{{" }} $labels.pod {{ "}}" }} in namespace {{ "{{" }} $labels.namespace {{ "}}" }} is using more than 90% of its memory limit for the last 5 minutes."
+        - alert: HighRequestLatency
+          expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="sockshop"}[5m])) by (le)) > 1
+          for: 5m
+          labels:
+            severity: warning
+            team: devops
+          annotations:
+            summary: "High request latency detected on sockshop services"
+            description: "The p99 latency for HTTP requests in job {{ "{{" }} $labels.job {{ "}}" }} is above 1 second for the last 5 minutes."
