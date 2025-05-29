@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: sockshop.ip-ddns.com
+  - host: app.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -25,7 +25,7 @@ spec:
             name: front-end
             port:
               number: 80
-  - host: www.sockshop.ip-ddns.com
+  - host: www.app.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -35,7 +35,7 @@ spec:
             name: front-end
             port:
               number: 80
-  - host: metrics.sockshop.ip-ddns.com
+  - host: metrics.app.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
