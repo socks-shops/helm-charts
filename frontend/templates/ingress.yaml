@@ -15,6 +15,16 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
+  - host: www.datascientets-socks-shop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: front-end
+            port:
+              number: 80
   - host: app.sockshop.ip-ddns.com
     http:
       paths:
