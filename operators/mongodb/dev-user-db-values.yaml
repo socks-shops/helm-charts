@@ -38,7 +38,7 @@ replsets:
       maxUnavailable: 1
 
 sharding:
-  enabled: true
+  enabled: false
 
 backup:
   enabled: false
