@@ -30,7 +30,7 @@ spec:
         args:
         - -port={{ .Values.user.containerPort }}
         - -database=mongodb
-        - -mongo-host=user-db.{{ .Release.Namespace }}.svc.cluster.local:27017
+        - -mongo-host=user-db.{{ .Release.Namespace }}.svc.cluster.local:27017/?replicaSet=rs0
         resources:
 {{ toYaml .Values.user.resources | indent 10 }}
         ports:
@@ -40,7 +40,7 @@ spec:
           name: metrics
         env:
         - name: MONGO_HOST
-          value: user-db:27017
+          value: user-db:27017/?replicaSet=rs0
         {{- if .Values.zipkin.enabled }}
         - name: ZIPKIN
           value: http://{{ .Values.zipkin.url }}:9411/api/v1/spans

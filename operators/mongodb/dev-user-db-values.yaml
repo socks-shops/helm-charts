@@ -1,47 +1,53 @@
-userdb:
-  replicaCount: 3  # Pour la HA, 3 pods minimum
+nameOverride: user-db
+
+psmdb:
+  clusterName: user-db
 
   image:
-    repo: weaveworksdemos/user-db
-    tag: 0.4.0
+    repository: percona/percona-server-mongodb
+    tag: 6.0.8-9
+
+  replsets:
+    - name: rs0
+      size: 3
+      volumeSpec:
+        persistentVolumeClaim:
+          accessModes: [ "ReadWriteOnce" ]
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: gp2
+      affinity:
+        antiAffinityTopologyKey: "kubernetes.io/hostname"
+
+  expose:
+    exposeType: ClusterIP
+    customService:
+      metadata:
+        name: user-db
+      spec:
+        selector:
+          app.kubernetes.io/name: psmdb-db
+          app.kubernetes.io/component: mongod
+          app.kubernetes.io/instance: user-db
+        ports:
+          - port: 27017
+            targetPort: 27017
 
   resources:
     limits:
-      cpu: 300m
-      memory: 1000Mi
+      cpu: 500m
+      memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 300Mi
-
-  persistence:
-    enabled: true
-    size: 5Gi
-    storageClass: gp2  # À adapter selon ton cluster
-    accessMode: ReadWriteOnce
-
-  service:
-    type: ClusterIP
-    name: user-db
-    port: 27017
-    targetPort: 27017
-    selector:
-      name: user-db
+      cpu: 500m
+      memory: 512Mi
 
   securityContext:
-    capabilities:
-      drop:
-        - all
-      add:
-        - CHOWN
-        - SETGID
-        - SETUID
-    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
 
-  volumeMounts:
-    - mountPath: /data/db  # point de montage classique MongoDB
-      name: data
+  backup:
+    enabled: false
 
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: userdb-pvc  # Nom du PVC généré automatiquement par Helm ou à définir
+  deletePVC: true

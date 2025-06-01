@@ -37,6 +37,8 @@ spec:
          {{- end }}
          - name: JAVA_OPTS
            value: {{ .Values.java.options }}
+         - name: MONGODB_URL
+           value: "mongodb://orders-db:27017/?replicaSet=rs0"
         resources:
 {{ toYaml .Values.orders.resources | indent 10 }}
         ports:
