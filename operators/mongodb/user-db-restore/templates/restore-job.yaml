@@ -1,12 +1,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "fullname" . }}-restore
+  name: {{ include "user-db-restore.fullname" . }}-restore
   namespace: {{ .Release.Namespace }}
 spec:
   template:
     metadata:
-      name: {{ include "fullname" . }}-restore
+      name: {{ include "user-db-restore.fullname" . }}-restore
     spec:
       restartPolicy: OnFailure
       containers:
