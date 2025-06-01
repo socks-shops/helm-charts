@@ -3,7 +3,7 @@ nameOverride: user-db
 replsets:
   rs0:
     name: rs0
-    size: 3
+    size: 2
     affinity:
       antiAffinityTopologyKey: "kubernetes.io/hostname"
     volumeSpec:
