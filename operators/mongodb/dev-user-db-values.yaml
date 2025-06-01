@@ -1,0 +1,47 @@
+userdb:
+  replicaCount: 3  # Pour la HA, 3 pods minimum
+
+  image:
+    repo: weaveworksdemos/user-db
+    tag: 0.4.0
+
+  resources:
+    limits:
+      cpu: 300m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: gp2  # À adapter selon ton cluster
+    accessMode: ReadWriteOnce
+
+  service:
+    type: ClusterIP
+    name: user-db
+    port: 27017
+    targetPort: 27017
+    selector:
+      name: user-db
+
+  securityContext:
+    capabilities:
+      drop:
+        - all
+      add:
+        - CHOWN
+        - SETGID
+        - SETUID
+    readOnlyRootFilesystem: false
+
+  volumeMounts:
+    - mountPath: /data/db  # point de montage classique MongoDB
+      name: data
+
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: userdb-pvc  # Nom du PVC généré automatiquement par Helm ou à définir

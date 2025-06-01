@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fullname" . }}-restore
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    metadata:
+      name: {{ include "fullname" . }}-restore
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: mongorestore
+        image: {{ .Values.restore.image.repository }}:{{ .Values.restore.image.tag }}
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - |
+            echo "Waiting for MongoDB to be ready..."
+            until nc -z {{ .Values.restore.mongoHost }} {{ .Values.restore.mongoPort }}; do
+              echo "Waiting for MongoDB..."
+              sleep 2
+            done
+            echo "Starting mongorestore..."
+            mongorestore --uri="{{ .Values.restore.mongoUri }}" --dir={{ .Values.restore.dumpPath }} --drop
+        volumeMounts:
+          - name: dump-volume
+            mountPath: {{ .Values.restore.dumpPath }}
+      volumes:
+        - name: dump-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.restore.pvcName }}
