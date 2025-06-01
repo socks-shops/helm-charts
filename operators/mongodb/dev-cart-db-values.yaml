@@ -1,59 +1,41 @@
-# DEPLOYER LE CHART AVEC LES BON RELEASE NAME POUR QUE LE MICROSERVICDE CARTS PUISSE COMMUNIQUER AVEC LUI !
-# -> helm install carts-db percona/psmdb-db -n <namespace> -f <value-file.yaml>
-
 nameOverride: carts-db
 
-psmdb:
-  clusterName: carts-db
+replsets:
+  rs0:
+    name: rs0
+    size: 3
+    affinity:
+      antiAffinityTopologyKey: "kubernetes.io/hostname"
+    volumeSpec:
+      persistentVolumeClaim:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: gp2
+    expose:
+      enabled: true
+      type: ClusterIP
+      customService:
+        metadata:
+          name: carts-db
+        spec:
+          selector:
+            app.kubernetes.io/name: psmdb-db
+            app.kubernetes.io/component: mongod
+            app.kubernetes.io/instance: carts-db
+          ports:
+            - port: 27017
+              targetPort: 27017
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    podDisruptionBudget:
+      maxUnavailable: 1
 
-  image:
-    repository: percona/percona-server-mongodb
-    tag: 6.0.8-9  # Version stable actuelle, à adapter si besoin
-
-  replsets:
-    - name: rs0
-      size: 3  # Pour la haute disponibilité (3 pods = quorum)
-      volumeSpec:
-        persistentVolumeClaim:
-          accessModes: [ "ReadWriteOnce" ]
-          resources:
-            requests:
-              storage: 1Gi
-          storageClassName: gp2
-      affinity:
-        antiAffinityTopologyKey: "kubernetes.io/hostname"  # Pour distribuer les pods sur plusieurs nodes
-
-  expose:
-    exposeType: ClusterIP
-    customService:
-      metadata:
-        name: carts-db
-      spec:
-        selector:
-          app.kubernetes.io/name: psmdb-db
-          app.kubernetes.io/component: mongod
-          app.kubernetes.io/instance: carts-db
-        ports:
-          - port: 27017
-            targetPort: 27017
-
-  # Ressources similaires au manifest Sock Shop
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 500m
-      memory: 512Mi
-
-  # Optionnel mais recommandé pour HA
-  securityContext:
-    runAsUser: 1001
-    runAsGroup: 1001
-    fsGroup: 1001
-
-  backup:
-    enabled: false  # Peut être activé plus tard si nécessaire
-
-  # Optionnel : si tu veux t'assurer que les PVC sont supprimés avec le cluster (à éviter en prod)
-    deletePVC: true
+backup:
+  enabled: false
