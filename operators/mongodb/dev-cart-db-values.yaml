@@ -1,9 +1,15 @@
 nameOverride: carts-db
 
+crVersion: 1.20.0
+
+image:
+  repository: percona/percona-server-mongodb
+  tag: 6.0.8-9
+
 replsets:
   rs0:
     name: rs0
-    size: 2
+    size: 3
     affinity:
       antiAffinityTopologyKey: "kubernetes.io/hostname"
     volumeSpec:
