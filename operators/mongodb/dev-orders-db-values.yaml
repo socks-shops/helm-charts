@@ -12,6 +12,10 @@ replsets:
     size: 3
     affinity:
       antiAffinityTopologyKey: "kubernetes.io/hostname"
+    labels:
+      app.kubernetes.io/instance: orders-db
+      app.kubernetes.io/name: psmdb-db
+      app.kubernetes.io/component: mongod
     volumeSpec:
       persistentVolumeClaim:
         accessModes: [ "ReadWriteOnce" ]
@@ -27,9 +31,9 @@ replsets:
           name: orders-db
         spec:
           selector:
+            app.kubernetes.io/instance: orders-db
             app.kubernetes.io/name: psmdb-db
             app.kubernetes.io/component: mongod
-            app.kubernetes.io/instance: orders-db
           ports:
             - port: 27017
               targetPort: 27017
@@ -42,6 +46,11 @@ replsets:
         memory: 512Mi
     podDisruptionBudget:
       maxUnavailable: 1
+    mongod:
+      setParameter:
+        enableAuth: "false"
+
+users: []
 
 sharding:
   enabled: false

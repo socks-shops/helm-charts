@@ -30,7 +30,9 @@ spec:
         args:
         - -port={{ .Values.user.containerPort }}
         - -database=mongodb
-        - -mongo-host=user-db.{{ .Release.Namespace }}.svc.cluster.local:27017/?replicaSet=rs0
+        - -mongo-host=user-db-rs0.{{ .Release.Namespace }}.svc.cluster.local:27017
+        # - -mongo-user=$(MONGO_USERNAME)
+        # - -mongo-password=$(MONGO_PASSWORD)
         resources:
 {{ toYaml .Values.user.resources | indent 10 }}
         ports:
@@ -40,7 +42,17 @@ spec:
           name: metrics
         env:
         - name: MONGO_HOST
-          value: user-db:27017/?replicaSet=rs0
+          value: user-db-rs0:27017
+        # - name: MONGO_USERNAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: user-db-secrets # Nom du Secret généré par l'operator mongodb (Percona)
+        #       key: MONGODB_USER_ADMIN_USER # Clé du nom d'utilisateur dans le Secret (Percona)
+        # - name: MONGO_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: user-db-secrets
+        #       key: MONGODB_USER_ADMIN_PASSWORD # Clé du password dans le Secret (Percona)
         {{- if .Values.zipkin.enabled }}
         - name: ZIPKIN
           value: http://{{ .Values.zipkin.url }}:9411/api/v1/spans

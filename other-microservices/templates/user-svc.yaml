@@ -3,12 +3,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: user
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "{{ .Values.user.containerPort }}"
   labels:
     name: user
 spec:
   ports:
     # the port that this service should serve on
-  - port: 80
-    targetPort: {{ .Values.user.containerPort }}
+    - port: 80
+      targetPort: { { .Values.user.containerPort } }
   selector:
     name: user

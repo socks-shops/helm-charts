@@ -12,6 +12,10 @@ replsets:
     size: 3
     affinity:
       antiAffinityTopologyKey: "kubernetes.io/hostname"
+    labels:
+      app.kubernetes.io/instance: user-db
+      app.kubernetes.io/name: psmdb-db
+      app.kubernetes.io/component: mongod
     volumeSpec:
       persistentVolumeClaim:
         accessModes: [ "ReadWriteOnce" ]
@@ -27,9 +31,9 @@ replsets:
           name: user-db
         spec:
           selector:
+            app.kubernetes.io/instance: user-db
             app.kubernetes.io/name: psmdb-db
             app.kubernetes.io/component: mongod
-            app.kubernetes.io/instance: user-db
           ports:
             - port: 27017
               targetPort: 27017
@@ -42,6 +46,21 @@ replsets:
         memory: 512Mi
     podDisruptionBudget:
       maxUnavailable: 1
+
+    initImage:
+      repository: socksshop/user-db-restore
+      tag: latest
+
+users:
+  - name: userAdmin # Le nom de l'utilisateur que l'opérateur utilise par défaut
+    passwordSecretRef: # RÉFÉRENCE AU NOUVEAU SECRET AVEC VALEURS VIDES
+      name: user-db-empty-secrets # <--- C'est le Secret que nous venons de créer
+      key: MONGODB_USER_ADMIN_PASSWORD # La clé pour le mot de passe vide
+    roles:
+      - name: userAdminAnyDatabase # Rôle pour gérer les utilisateurs sur toutes les BD
+        db: admin
+      - name: readWriteAnyDatabase # Rôle pour lire/écrire sur TOUTES les BD
+        db: admin
 
 sharding:
   enabled: false
