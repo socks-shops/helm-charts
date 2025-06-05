@@ -10,11 +10,9 @@ metadata:
   labels:
     name: front-end
 spec:
-  type: LoadBalancer
-  allocateLoadBalancerNodePorts: false
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 8079
-      #nodePort: 30001
   selector:
     name: front-end

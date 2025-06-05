@@ -6,13 +6,13 @@ metadata:
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: "/metrics"
-    prometheus.io/port: "{{ .Values.catalogue.containerPort }}"
+    prometheus.io/port: "80"
   labels:
     name: catalogue
 spec:
   ports:
     # the port that this service should serve on
     - port: 80
-      targetPort: { { .Values.catalogue.containerPort } }
+      targetPort: {{ .Values.catalogue.containerPort }}
   selector:
     name: catalogue

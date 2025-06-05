@@ -14,10 +14,6 @@ spec:
     metadata:
       labels:
         name: orders
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.orders.metricsPort | default .Values.orders.containerPort }}"
-        prometheus.io/path: "/metrics"
       {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
@@ -38,14 +34,12 @@ spec:
          - name: JAVA_OPTS
            value: {{ .Values.java.options }}
          - name: DB
-           value: "orders-db-rs0"
+           value: "orders-db"
         resources:
 {{ toYaml .Values.orders.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.orders.containerPort }}
           name: http
-        - containerPort: {{ .Values.orders.metricsPort | default .Values.orders.containerPort }}
-          name: metrics
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001

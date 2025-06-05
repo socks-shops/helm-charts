@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: datascientets-socks-shop.com
+  - host: www.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -25,17 +25,7 @@ spec:
             name: front-end
             port:
               number: 80
-  - host: www.datascientets-socks-shop.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: front-end
-            port:
-              number: 80
-  - host: metrics.datascientets-socks-shop.com
+  - host: metrics.sockshop.ip-ddns.com
     http:
       paths:
       - path: /
@@ -45,6 +35,36 @@ spec:
             name: kube-prometheus-stack-grafana
             port:
               number: 80
+  # - host: datascientets-socks-shop.com
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: front-end
+  #           port:
+  #             number: 80
+  # - host: www.datascientets-socks-shop.com
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: front-end
+  #           port:
+  #             number: 80
+  # - host: metrics.datascientets-socks-shop.com
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: kube-prometheus-stack-grafana
+  #           port:
+  #             number: 80
 
 
 # apiVersion: networking.k8s.io/v1

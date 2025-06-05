@@ -14,10 +14,6 @@ spec:
     metadata:
       labels:
         name: user
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.user.metricsPort | default .Values.user.containerPort }}"
-        prometheus.io/path: "/metrics"
       {{- if .Values.istio.enabled }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       {{- end }}
@@ -30,7 +26,7 @@ spec:
         args:
         - -port={{ .Values.user.containerPort }}
         - -database=mongodb
-        - -mongo-host=user-db-rs0.{{ .Release.Namespace }}.svc.cluster.local:27017
+        - -mongo-host=user-db.{{ .Release.Namespace }}.svc.cluster.local:27017
         # - -mongo-user=$(MONGO_USERNAME)
         # - -mongo-password=$(MONGO_PASSWORD)
         resources:
@@ -38,11 +34,9 @@ spec:
         ports:
         - containerPort: {{ .Values.user.containerPort }}
           name: http
-        - containerPort: {{ .Values.user.metricsPort | default .Values.user.containerPort }}
-          name: metrics
         env:
         - name: MONGO_HOST
-          value: user-db-rs0:27017
+          value: user-db:27017
         # - name: MONGO_USERNAME
         #   valueFrom:
         #     secretKeyRef:
