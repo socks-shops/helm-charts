@@ -15,6 +15,8 @@ spec:
       labels:
         name: carts-db
     spec:
+      securityContext:
+          fsGroup: 999
       containers:
       - name: carts-db
         image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.cartsdb.image.repo }}:{{ .Values.cartsdb.image.tag }}
@@ -33,9 +35,9 @@ spec:
               - SETUID
           readOnlyRootFilesystem: false
         volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
+        - mountPath: /data/db
+          name: carts-db-storage
       volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
+        - name: carts-db-storage
+          persistentVolumeClaim:
+            claimName: carts-db-pvc

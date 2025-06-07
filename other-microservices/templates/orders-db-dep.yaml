@@ -15,6 +15,8 @@ spec:
       labels:
         name: orders-db
     spec:
+      securityContext:
+          fsGroup: 999
       containers:
       - name: orders-db
         image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.ordersdb.image.repo }}:{{ .Values.ordersdb.image.tag }}
@@ -33,9 +35,9 @@ spec:
               - SETUID
           readOnlyRootFilesystem: false
         volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
+        - mountPath: /data/db
+          name: orders-db-storage
       volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
+        - name: orders-db-storage
+          persistentVolumeClaim:
+            claimName: orders-db-pvc
