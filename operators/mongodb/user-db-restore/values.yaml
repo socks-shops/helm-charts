@@ -1,9 +1,0 @@
-restore:
-  image:
-    repository: socksshop/user-db-restore
-    tag: latest
-  mongoHost: user-db-rs0
-  mongoPort: 27017
-  mongoUri: "mongodb://user-db-rs0:27017"
-  dumpPath: /dump
-  pvcName: user-db-restore-pvc   # PVC contenant la sauvegarde MongoDB

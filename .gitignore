@@ -1,3 +1,4 @@
 db/aws-credentials.yaml
 db/s3-backups-encryption-key.yaml
 velero/velero-values.yaml
+secrets/
