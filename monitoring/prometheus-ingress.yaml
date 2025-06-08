@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: grafana-metrics-ingress
+  name: prometheus-ingress
   namespace: monitoring
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/group.name: sockshop-main-alb
     alb.ingress.kubernetes.io/group.order: "20"
@@ -14,13 +14,13 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: grafana.sockshop.loseyourip.com
+  - host: prometheus.sockshop.loseyourip.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: kube-prometheus-stack-grafana
+            name: kube-prometheus-stack-prometheus
             port:
-              name: http-web
+              number: 9090
