@@ -1,4 +1,4 @@
-# Installing sock-shop on Kubernetes
+# Installing sock-shop on Kubernetes.
 
 See the [documentation](https://microservices-demo.github.io/deployment/kubernetes-minikube.html) on how to deploy Sock Shop using Minikube.
 
@@ -17,16 +17,18 @@ To use them, please run `kubectl create -f <path to directory>`.
 
 ### What's Included?
 
-* Sock-shop grafana dashboards
-* Alertmanager with 500 alert connected to slack
-* Prometheus with config to scrape all k8s pods, connected to local alertmanager.
+- Sock-shop grafana dashboards
+- Alertmanager with 500 alert connected to slack
+- Prometheus with config to scrape all k8s pods, connected to local alertmanager.
 
 ### Ports
 
 Grafana will be exposed on the NodePort `31300` and Prometheus is exposed on `31090`. If running on a real cluster, the easiest way to connect to these ports is by port forwarding in a ssh command:
+
 ```
 ssh -i $KEY -L 3000:$NODE_IN_CLUSTER:31300 -L 9090:$NODE_IN_CLUSTER:31090 ubuntu@$BASTION_IP
 ```
+
 Where all the pertinent information should be entered. Grafana and Prometheus will be available on `http://localhost:3000` or `:9090`.
 
 If on Minikube, you can connect via the VM IP address and the NodePort.
