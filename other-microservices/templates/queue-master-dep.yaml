@@ -6,7 +6,7 @@ metadata:
   labels:
     name: queue-master
 spec:
-  replicas: 1
+  replicas: {{ .Values.queuemaster.replicas }}
   selector:
     matchLabels:
       name: queue-master

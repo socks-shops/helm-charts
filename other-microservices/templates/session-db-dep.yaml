@@ -6,7 +6,7 @@ metadata:
   labels:
     name: session-db
 spec:
-  replicas: 1
+  replicas: {{ .Values.sessiondb.replicas }}
   selector:
     matchLabels:
       name: session-db

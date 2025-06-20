@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: carts-hpa
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: carts
+  minReplicas: {{ .Values.carts.hpa.minReplicas | default "1" }}
+  maxReplicas: {{ .Values.carts.hpa.maxReplicas | default "2" }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.carts.hpa.cpuTargetUtilization | default "80" }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.carts.hpa.memoryTargetUtilization | default "80" }}

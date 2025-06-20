@@ -1,0 +1,20 @@
+istio:
+    enabled: false
+
+frontend:
+    replicas: 2
+    image:
+        repo: socksshop/front-end
+        tag: latest
+    resources:
+        limits:
+            cpu: 300m
+            memory: 1000Mi
+        requests:
+            cpu: 100m
+            memory: 300Mi
+    hpa:
+        minReplicas: 1
+        maxReplicas: 4
+        cpuTargetUtilization: 80
+        memoryTargetUtilization: 80

@@ -6,7 +6,7 @@ metadata:
   labels:
     name: payment
 spec:
-  replicas: 1
+  replicas: {{ .Values.payment.replicas }}
   selector:
     matchLabels:
       name: payment

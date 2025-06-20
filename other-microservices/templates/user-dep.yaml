@@ -6,7 +6,7 @@ metadata:
   labels:
     name: user
 spec:
-  replicas: 1
+  replicas: {{ .Values.user.replicas }}
   selector:
     matchLabels:
       name: user

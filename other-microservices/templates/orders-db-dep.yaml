@@ -6,7 +6,7 @@ metadata:
   labels:
     name: orders-db
 spec:
-  replicas: 1
+  replicas: {{ .Values.ordersdb.replicas }}
   selector:
     matchLabels:
       name: orders-db
