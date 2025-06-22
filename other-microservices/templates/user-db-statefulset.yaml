@@ -2,30 +2,30 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: carts-db
+  name: user-db
   labels:
-    name: carts-db
+    name: user-db
 spec:
-  serviceName: "carts-db-headless"
-  replicas: {{ .Values.cartsdb.replicas }}
+  serviceName: "user-db-headless"
+  replicas: {{ .Values.userdb.replicas }}
   selector:
     matchLabels:
-      name: carts-db
+      name: user-db
   template:
     metadata:
       labels:
-        name: carts-db
+        name: user-db
     spec:
       securityContext:
         fsGroup: 999
       containers:
-      - name: carts-db
-        image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.cartsdb.image.repo }}:{{ .Values.cartsdb.image.tag }}
+      - name: user-db
+        image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.userdb.image.repo }}:{{ .Values.userdb.image.tag }}
         ports:
         - name: mongo
           containerPort: 27017
         resources:
-{{ toYaml .Values.cartsdb.resources | indent 10 }}
+{{ toYaml .Values.userdb.resources | indent 10 }}
         securityContext:
           runAsUser: 999
           capabilities:
@@ -38,12 +38,12 @@ spec:
           readOnlyRootFilesystem: false
         volumeMounts:
         - mountPath: /data/db
-          name: carts-db-storage
+          name: user-db-storage
   volumeClaimTemplates:
   - metadata:
-      name: carts-db-storage
+      name: user-db-storage
       labels:
-        app: carts-db
+        app: user-db
     spec:
       accessModes:
         - ReadWriteOnce
