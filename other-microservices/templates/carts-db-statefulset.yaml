@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet # CHANGEMENT: Utilisation d'un StatefulSet pour la base de données
+metadata:
+  name: carts-db
+  labels:
+    name: carts-db
+spec:
+  serviceName: "carts-db-headless" # AJOUT: Nom du service headless associé (voir ci-dessous)
+  replicas: {{ .Values.cartsdb.replicas }}
+  selector:
+    matchLabels:
+      name: carts-db
+  template:
+    metadata:
+      labels:
+        name: carts-db
+    spec:
+      # securityContext au niveau du Pod pour gérer les permissions de groupe sur le volume
+      securityContext:
+        fsGroup: 999
+      containers:
+      - name: carts-db
+        image: {{if .Values.global.registry}}{{ .Values.global.registry }}/{{end}}{{ .Values.cartsdb.image.repo }}:{{ .Values.cartsdb.image.tag }}
+        ports:
+        - name: mongo
+          containerPort: 27017
+        resources:
+{{ toYaml .Values.cartsdb.resources | indent 10 }}
+        # securityContext au niveau du conteneur pour définir l'utilisateur d'exécution du processus
+        securityContext:
+          runAsUser: 999 # AJOUT: Assure que le processus MongoDB s'exécute avec l'UID 999
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: false
+        volumeMounts:
+        - mountPath: /data/db
+          name: carts-db-storage # Doit correspondre au nom dans volumeClaimTemplates
+  # AJOUT IMPORTANT: volumeClaimTemplates pour provisionner un PVC unique par réplica
+  volumeClaimTemplates:
+  - metadata:
+      name: carts-db-storage # Ce nom doit correspondre au 'name' dans volumeMounts ci-dessus
+      labels:
+        app: carts-db
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: gp3 # Doit correspondre à une StorageClass existante dans votre cluster EKS
+      resources:
+        requests:
+          storage: 1Gi
