@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: front-end
-  namespace: dev
   labels: {}
   annotations:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
